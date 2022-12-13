@@ -35,7 +35,7 @@ namespace Button_Executer
         {
             // XML Initialization code
             XmlDocument xmlFile = new XmlDocument();
-            xmlFile.Load("buttons.xml");
+            xmlFile.Load(Environment.ExpandEnvironmentVariables("%userprofile%\\Documents\\buttons.xml"));
 
             XmlNodeList destinationList = xmlFile.GetElementsByTagName("ButtonDestination");
             String theCommand = destinationList[this.buttonIndex].InnerText.ToString();
