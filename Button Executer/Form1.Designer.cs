@@ -35,7 +35,7 @@ namespace Button_Executer
         {
             // XML Initialization code
             XmlDocument xmlFile = new XmlDocument();
-            xmlFile.Load("buttons.xml");
+            xmlFile.Load(Environment.ExpandEnvironmentVariables("%userprofile%\\Documents\\Button Executer\\buttons.xml"));
 
             XmlNodeList labelList = xmlFile.GetElementsByTagName("ButtonLabel");
             XmlNodeList typeList = xmlFile.GetElementsByTagName("ButtonType");

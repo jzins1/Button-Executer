@@ -22,7 +22,7 @@ namespace Button_Executer
         {
             InitializeComponent();
             xmlFile = new XmlDocument();
-            xmlFile.Load("buttons.xml");
+            xmlFile.Load(Environment.ExpandEnvironmentVariables("%userprofile%\\Documents\\Button Executer\\buttons.xml"));
             labelList = xmlFile.GetElementsByTagName("ButtonLabel");
             destinationList = xmlFile.GetElementsByTagName("ButtonDestination");
         }
