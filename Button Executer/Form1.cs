@@ -15,30 +15,35 @@ namespace Button_Executer
 {
     public partial class Form1 : Form
     {
-        XmlDocument xmlFile;
-        XmlNodeList labelList;
-        XmlNodeList destinationList;
+        IEnumerable<string> labelList;
+        IEnumerable<string> destinationList;
         public Form1()
         {
             InitializeComponent();
-            xmlFile = new XmlDocument();
-            xmlFile.Load(Environment.ExpandEnvironmentVariables("%userprofile%\\Documents\\Button Executer\\buttons.xml"));
-            labelList = xmlFile.GetElementsByTagName("ButtonLabel");
-            destinationList = xmlFile.GetElementsByTagName("ButtonDestination");
+            ButtonParser buttonParser = new ButtonParser("%userprofile%\\Documents\\Button Executer\\buttons.xml");
+            labelList = buttonParser.ParseLabels();
+            destinationList = buttonParser.ParseDestinations();
         }
 
         private void buttonx_Click(object sender, EventArgs e)
         {
+
+            /*
             Button b = sender as Button;
-            for(int i = 0; i < destinationList.Count; i++)
+            int iteration = 0;
+            foreach (var label in labelList)
             {
-                if(labelList[i].InnerText.ToString().Equals(b.Text))
+                if(label.Equals("Reboot PC"))
+                //if(label.Equals(b.Text))
                 {
-                    FormArguments fA = new FormArguments(i);
+                    FormArguments fA = new FormArguments(3); // However I am keeping track of button index, that goes in parameter
                     fA.ShowDialog();
                     break;
                 }
+                iteration++;
+
             }
+            */
 
         }
         private void button1_Click(object sender, EventArgs e)

@@ -11,39 +11,38 @@ namespace Button_Executer
     {
         public bool validateButtons(string xmlDocument)
         {
-            XmlDocument xmlFile = new XmlDocument();
-            xmlFile.Load(xmlDocument);
+            ButtonParser buttonParser = new ButtonParser("%userprofile%\\Documents\\Button Executer\\buttons.xml");
 
-            XmlNodeList labelList = xmlFile.GetElementsByTagName("ButtonLabel");
-            XmlNodeList typeList = xmlFile.GetElementsByTagName("ButtonType");
-            XmlNodeList destinationList = xmlFile.GetElementsByTagName("ButtonDestination");
-            int count = destinationList.Count;
+            IEnumerable<string> labelList = buttonParser.ParseLabels();
+            IEnumerable<string> typeList = buttonParser.ParseTypes();
+            IEnumerable<string> destinationList = buttonParser.ParseTypes();
+            int count = destinationList.Count();
 
-            for(int i = 0; i < count; i++)
+            foreach ((string label, string type, string destination) in labelList.Zip(typeList, (l, t) => (l, t)).Zip(destinationList, (t, d) => (t.Item1, t.Item2, d)))
             {
                 // Make sure button label isn't too long
-                if(labelList[i].InnerText.ToString().Length > 35)
+                if(label.Length > 35)
                 {
                     return false;
                 }
 
                 // Ensure button type is valid
-                if(typeList[i].InnerText.ToString() != "File" || typeList[i].InnerText.ToString() != "Link" || typeList[i].InnerText.ToString() != "Command")
+                if(type != "File" || type != "Link" || type != "Command")
                 {
                     return false;
                 }
 
                 // Check if link prefixes with http:// or https:// (still need to make sure it's actually at very beginning)
-                if(typeList[i].InnerText.ToString().Equals("Link"))
+                if(type.Equals("Link"))
                 {
-                    if(!destinationList[i].InnerText.ToString().Contains("http://") || !destinationList[i].InnerText.ToString().Contains("https://"))
+                    if(!destination.Contains("http://") || !destination.Contains("https://"))
                     {
                         return false;
                     }
                     return true;
                 }
-            }
 
+            }
             return true;
         }
     }

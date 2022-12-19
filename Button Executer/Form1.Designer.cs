@@ -2,6 +2,8 @@
 using System;
 using System.Xml;
 using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace Button_Executer
 {
@@ -34,31 +36,54 @@ namespace Button_Executer
         private void InitializeComponent()
         {
             // XML Initialization code
-            XmlDocument xmlFile = new XmlDocument();
-            xmlFile.Load(Environment.ExpandEnvironmentVariables("%userprofile%\\Documents\\Button Executer\\buttons.xml"));
+            ButtonParser buttonParser = new ButtonParser("%userprofile%\\Documents\\Button Executer\\buttons.xml");
 
-            XmlNodeList labelList = xmlFile.GetElementsByTagName("ButtonLabel");
-            XmlNodeList typeList = xmlFile.GetElementsByTagName("ButtonType");
-            XmlNodeList destinationList = xmlFile.GetElementsByTagName("ButtonDestination");
-            int count = destinationList.Count;
-            string stringDebug = destinationList[4].InnerText.ToString();
+            IEnumerable<string> labelList = buttonParser.ParseLabels();
+            IEnumerable<string> typeList = buttonParser.ParseTypes();
+            IEnumerable<string> destinationList = buttonParser.ParseDestinations();
+            int count = destinationList.Count();
+
             System.Windows.Forms.Button[] buttons = new System.Windows.Forms.Button[count];
+            FormButton[] formButtons = new FormButton[count];
 
-
-
-            for(int i = 0; i < count; i++)
+            int index = 0;
+            foreach ((string label, string type, string destination) in labelList.Zip(typeList, (l, t) => (l, t)).Zip(destinationList, (t, d) => (t.Item1, t.Item2, d)))
             {
-                buttons[i] = new System.Windows.Forms.Button();
-                buttons[i].Location = new System.Drawing.Point(96, 75 + (i * 40));
-                buttons[i].Name = "button" + (i + 1);
-                buttons[i].Size = new System.Drawing.Size(150, 23);
-                buttons[i].TabIndex = i;
-                buttons[i].Text = labelList[i].InnerText.ToString();
-                buttons[i].UseVisualStyleBackColor = true;
-                if(typeList[i].InnerText.ToString() == "Command")
+                if(type.Equals("File")) formButtons[index] = new FormButtonFile(label, type, destination);
+                if(type.Equals("Link")) formButtons[index] = new FormButtonLink(label, type, destination);
+                if(type.Equals("Command")) formButtons[index] = new FormButtonCommand(label, type, destination);
+                buttons[index] = new System.Windows.Forms.Button();
+                Console.WriteLine(formButtons[index].Label);
+                buttons[index].Location = new System.Drawing.Point(96, 75 + (index * 40));
+                buttons[index].Name = "button" + (index + 1);
+                buttons[index].Size = new System.Drawing.Size(150, 23);
+                buttons[index].TabIndex = index;
+                //buttons[index].Text = formButtons[index].Label;
+                buttons[index].Text = label;
+                buttons[index].UseVisualStyleBackColor = true;
+                buttons[index].Click += (sender, e) =>
                 {
-                    buttons[i].Click += new System.EventHandler(buttonx_Click);
+                    Button clickedButton = sender as Button;
+                    for(int i = 0; i < count; i++)
+                    {
+                        if(clickedButton == buttons[i])
+                        {
+                            formButtons[i].ExecuteDestination();
+                            Console.WriteLine("Index is " + i);
+                        }
+                    }
+                };
+                /*
+                if(type == "Command")
+                {
+                    //buttons[index].Click += new System.EventHandler(buttonx_Click);
+                    buttons[index].Click += (sender, e) =>
+                    {
+
+                    }new System.EventHandler(buttonx_Click);
                 }
+                */
+                index++;
             }
 
             this.button1 = new System.Windows.Forms.Button();
@@ -126,7 +151,7 @@ namespace Button_Executer
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 5;
-            this.label1.Text = stringDebug;
+            this.label1.Text = "";
             // 
             // Form1
             // 
