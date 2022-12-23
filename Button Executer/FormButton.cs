@@ -18,7 +18,8 @@ namespace Button_Executer
             Type = type;
             Destination = destination;
         }
-        public void ExecuteDestination()
+
+        public virtual void ExecuteDestination()
         {
 
         }

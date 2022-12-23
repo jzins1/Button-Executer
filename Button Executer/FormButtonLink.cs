@@ -14,15 +14,14 @@ namespace Button_Executer
 
         public FormButtonLink(string label, string type, string destination) : base(label, type, destination)
         {
-            Label = label;
-            Type = type;
-            Destination = destination;
+            this.Label = label;
+            this.Type = type;
+            this.Destination = destination;
         }
 
-        public void ExecuteDestination()
+        public override void ExecuteDestination()
         {
             System.Diagnostics.Process.Start(Destination);
-            Console.WriteLine("Destination is " + Destination);
         }
     }
 }

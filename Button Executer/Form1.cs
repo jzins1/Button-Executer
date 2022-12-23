@@ -25,27 +25,6 @@ namespace Button_Executer
             destinationList = buttonParser.ParseDestinations();
         }
 
-        private void buttonx_Click(object sender, EventArgs e)
-        {
-
-            /*
-            Button b = sender as Button;
-            int iteration = 0;
-            foreach (var label in labelList)
-            {
-                if(label.Equals("Reboot PC"))
-                //if(label.Equals(b.Text))
-                {
-                    FormArguments fA = new FormArguments(3); // However I am keeping track of button index, that goes in parameter
-                    fA.ShowDialog();
-                    break;
-                }
-                iteration++;
-
-            }
-            */
-
-        }
         private void button1_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://mail.google.com");

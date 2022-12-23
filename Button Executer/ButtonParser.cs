@@ -11,6 +11,7 @@ namespace Button_Executer
     {
         private XmlDocument xmlFile;
         private string xmlString;
+        private ButtonValidator validator;
         public ButtonParser(string xmlString)
         {
             xmlFile = new XmlDocument();
@@ -29,7 +30,7 @@ namespace Button_Executer
         }
         public IEnumerable<string> ParseTypes()
         {
-            XmlNodeList typeList = xmlFile.GetElementsByTagName("ButtonLabel");
+            XmlNodeList typeList = xmlFile.GetElementsByTagName("ButtonType");
             List<string> types = new List<string>();
             for(int i = 0; i < typeList.Count; i++)
             {
@@ -39,7 +40,7 @@ namespace Button_Executer
         }
         public IEnumerable<string> ParseDestinations()
         {
-            XmlNodeList destinationList = xmlFile.GetElementsByTagName("ButtonLabel");
+            XmlNodeList destinationList = xmlFile.GetElementsByTagName("ButtonDestination");
             List<string> destinations = new List<string>();
             for(int i = 0; i < destinationList.Count; i++)
             {

@@ -12,14 +12,19 @@ namespace Button_Executer
 {
     public partial class FormArguments : Form
     {
-        public FormArguments(int buttonIndex)
+        private ArgumentHolder arguments;
+        public FormArguments(ArgumentHolder argumentHolder)
         {
-            InitializeComponent();
-            this.buttonIndex = buttonIndex;
+            arguments = argumentHolder;
+            InitializeComponent(arguments.Args.Length);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            for(int i = 0; i < arguments.Args.Length; i++)
+            {
+                arguments.Args[i] = textBoxes[i].Text;
+            }
             this.Close();
         }
 

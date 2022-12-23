@@ -49,17 +49,15 @@ namespace Button_Executer
             int index = 0;
             foreach ((string label, string type, string destination) in labelList.Zip(typeList, (l, t) => (l, t)).Zip(destinationList, (t, d) => (t.Item1, t.Item2, d)))
             {
-                if(type.Equals("File")) formButtons[index] = new FormButtonFile(label, type, destination);
-                if(type.Equals("Link")) formButtons[index] = new FormButtonLink(label, type, destination);
-                if(type.Equals("Command")) formButtons[index] = new FormButtonCommand(label, type, destination);
+                if (type.Equals("File"))  formButtons[index] = new FormButtonFile(label, type, destination);
+                if (type.Equals("Link"))  formButtons[index] = new FormButtonLink(label, type, destination);
+                if (type.Equals("Command")) formButtons[index] = new FormButtonCommand(label, type, destination);
                 buttons[index] = new System.Windows.Forms.Button();
-                Console.WriteLine(formButtons[index].Label);
-                buttons[index].Location = new System.Drawing.Point(96, 75 + (index * 40));
+                buttons[index].Location = new System.Drawing.Point((int)(35 + Math.Floor((double) (index / 10)) * 175), 35 + ((index % 10) * 40));
                 buttons[index].Name = "button" + (index + 1);
                 buttons[index].Size = new System.Drawing.Size(150, 23);
                 buttons[index].TabIndex = index;
-                //buttons[index].Text = formButtons[index].Label;
-                buttons[index].Text = label;
+                buttons[index].Text = formButtons[index].Label;
                 buttons[index].UseVisualStyleBackColor = true;
                 buttons[index].Click += (sender, e) =>
                 {
@@ -69,7 +67,6 @@ namespace Button_Executer
                         if(clickedButton == buttons[i])
                         {
                             formButtons[i].ExecuteDestination();
-                            Console.WriteLine("Index is " + i);
                         }
                     }
                 };

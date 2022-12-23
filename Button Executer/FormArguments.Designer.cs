@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 
@@ -31,31 +32,28 @@ namespace Button_Executer
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        private void InitializeComponent(int numArguments)
         {
-            // XML Initialization code
-            XmlDocument xmlFile = new XmlDocument();
-            xmlFile.Load(Environment.ExpandEnvironmentVariables("%userprofile%\\Documents\\Button Executer\\buttons.xml"));
-
-            XmlNodeList destinationList = xmlFile.GetElementsByTagName("ButtonDestination");
-            String theCommand = destinationList[this.buttonIndex].InnerText.ToString();
-
-            int numArguments = theCommand.Split('$').Length - 1;
             int totalTabs = 2;
 
-            System.Windows.Forms.TextBox[] textBoxes = new System.Windows.Forms.TextBox[numArguments];
-            System.Windows.Forms.Label[] labels = new System.Windows.Forms.Label[numArguments];
+            textBoxes = new System.Windows.Forms.TextBox[numArguments];
+            labels = new System.Windows.Forms.Label[numArguments];
 
             for(int i = 0; i < numArguments; i++)
             {
+                labels[i] = new System.Windows.Forms.Label();
+                textBoxes[i] = new System.Windows.Forms.TextBox();
                 labels[i].AutoSize = true;
-                labels[i].Location = new System.Drawing.Point(42, 36 + (i * 40));
+                //buttons[index].Location = new System.Drawing.Point((int)(35 + Math.Floor((double) (index / 10)) * 175), 35 + ((index % 10) * 40));
+                //labels[i].Location = new System.Drawing.Point(42, 36 + (i * 40));
+                labels[i].Location = new System.Drawing.Point((int)(42 + Math.Floor((double) (i / 10)) * 400), 25 + ((i % 10) * 40));
                 labels[i].Name = "label" + (i + 1);
                 labels[i].Size = new System.Drawing.Size(64, 13);
                 labels[i].TabIndex = totalTabs;
                 totalTabs++;
                 labels[i].Text = "Argument " + (i + 1) + ":";
-                textBoxes[i].Location = new System.Drawing.Point(112, 33 + (i * 40));
+                //textBoxes[i].Location = new System.Drawing.Point(112, 33 + (i * 40));
+                textBoxes[i].Location = new System.Drawing.Point((int)(112 + Math.Floor((double) (i / 10)) * 400), 22 + ((i % 10) * 40));
                 textBoxes[i].Name = "textBox" + (i + 1);
                 textBoxes[i].Size = new System.Drawing.Size(222, 20);
                 textBoxes[i].TabIndex = totalTabs;
@@ -160,5 +158,7 @@ namespace Button_Executer
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox[] textBoxes;
+        private System.Windows.Forms.Label[] labels;
     }
 }

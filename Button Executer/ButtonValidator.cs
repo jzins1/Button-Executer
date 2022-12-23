@@ -11,7 +11,7 @@ namespace Button_Executer
     {
         public bool validateButtons(string xmlDocument)
         {
-            ButtonParser buttonParser = new ButtonParser("%userprofile%\\Documents\\Button Executer\\buttons.xml");
+            ButtonParser buttonParser = new ButtonParser(xmlDocument);
 
             IEnumerable<string> labelList = buttonParser.ParseLabels();
             IEnumerable<string> typeList = buttonParser.ParseTypes();
@@ -21,7 +21,7 @@ namespace Button_Executer
             foreach ((string label, string type, string destination) in labelList.Zip(typeList, (l, t) => (l, t)).Zip(destinationList, (t, d) => (t.Item1, t.Item2, d)))
             {
                 // Make sure button label isn't too long
-                if(label.Length > 35)
+                if(label.Length > 25)
                 {
                     return false;
                 }
@@ -39,7 +39,6 @@ namespace Button_Executer
                     {
                         return false;
                     }
-                    return true;
                 }
 
             }
