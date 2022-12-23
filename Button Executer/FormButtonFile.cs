@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,13 @@ namespace Button_Executer
 
         public override void ExecuteDestination()
         {
-            System.Diagnostics.Process.Start("explorer.exe", Environment.ExpandEnvironmentVariables(Destination));
+            if (Directory.Exists(Environment.ExpandEnvironmentVariables(Destination)))
+            {
+                System.Diagnostics.Process.Start("explorer.exe", Environment.ExpandEnvironmentVariables(Destination));
+            } else if (File.Exists(Environment.ExpandEnvironmentVariables(Destination)))
+            {
+                System.Diagnostics.Process.Start(Environment.ExpandEnvironmentVariables(Destination));
+            }
         }
     }
 }
